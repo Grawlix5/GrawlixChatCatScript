@@ -3,7 +3,9 @@ using Microsoft Azure Voices and Streamer.bot allows overlap between messages fo
 
 # Prerequisites
 Python 3.6 or later
+
 An active Azure subscription
+
 Azure Cognitive Services Speech SDK for Python
  -> pip install azure-cognitiveservices-speech
  -> PLEASE READ AND FOLLOW THIS GUIDE: https://learn.microsoft.com/en-us/azure/ai-services/speech-service/get-started-text-to-speech?tabs=windows%2Cterminal&pivots=programming-language-python
