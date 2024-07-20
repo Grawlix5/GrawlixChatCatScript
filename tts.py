@@ -37,8 +37,14 @@ class MyUDPHandler(socketserver.DatagramRequestHandler):
                 text = text[:140]
                 print(f"Message truncated to: {text}")
 
-        contains_url = any(substring in text for substring in ['https://', 'www.', 'http'])
-            if contains_url:
+                   text = msgRecvd.decode('utf-8')
+
+        if len(text) > 140:
+                text = text[:140]
+                print(f"Message truncated to: {text}")
+
+            contains_url = any(substring in text for substring in ['https://', 'www.', 'http'])
+        if contains_url:
                 ssml = f"""<speak xmlns="http://www.w3.org/2001/10/synthesis" xmlns:mstts="http://www.w3.org/2001/mstts" xmlns:emo="http://www.w3.org/2009/10/emotionml" version="1.0" xml:lang="en-US">
                     <voice name="en-US-{name}Neural">
                         <s />
@@ -48,8 +54,7 @@ class MyUDPHandler(socketserver.DatagramRequestHandler):
                         <s />
                     </voice>
                 </speak>""
-            else
-            
+        else:
                 ssml = f"""<speak xmlns="http://www.w3.org/2001/10/synthesis" xmlns:mstts="http://www.w3.org/2001/mstts" xmlns:emo="http://www.w3.org/2009/10/emotionml" version="1.0" xml:lang="en-US">
                     <voice name="en-US-{name}Neural">
                         <s />
@@ -58,13 +63,13 @@ class MyUDPHandler(socketserver.DatagramRequestHandler):
                         </mstts:express-as>
                         <s />
                     </voice>
-                </speak>""
+                </speak>"""
 
-            try:
+        try:
                 if not stylelist:
                     style = "default"
                 asyncio.run(self.play_tts(ssml, None, contains_url))
-            except Exception as e:
+        except Exception as e:
                 print("Error during TTS:", e)
 
     async def play_tts(self, ssml, ssml2, contains_url):
