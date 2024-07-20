@@ -37,7 +37,7 @@ class MyUDPHandler(socketserver.DatagramRequestHandler):
                 text = text[:140]
                 print(f"Message truncated to: {text}")
 
-            contains_url = any(substring in text for substring in ['https://', 'www.', 'http'])
+        contains_url = any(substring in text for substring in ['https://', 'www.', 'http'])
             if contains_url:
                 ssml = f"""<speak xmlns="http://www.w3.org/2001/10/synthesis" xmlns:mstts="http://www.w3.org/2001/mstts" xmlns:emo="http://www.w3.org/2009/10/emotionml" version="1.0" xml:lang="en-US">
                     <voice name="en-US-{name}Neural">
