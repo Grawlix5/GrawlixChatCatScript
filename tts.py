@@ -33,17 +33,11 @@ class MyUDPHandler(socketserver.DatagramRequestHandler):
             style = "default"
 
         text = msgRecvd.decode('utf-8')
-            if len(text) > 140:
-                text = text[:140]
-                print(f"Message truncated to: {text}")
-
-                   text = msgRecvd.decode('utf-8')
-
         if len(text) > 140:
                 text = text[:140]
                 print(f"Message truncated to: {text}")
 
-            contains_url = any(substring in text for substring in ['https://', 'www.', 'http'])
+        contains_url = any(substring in text for substring in ['https://', 'www.', 'http'])
         if contains_url:
                 ssml = f"""<speak xmlns="http://www.w3.org/2001/10/synthesis" xmlns:mstts="http://www.w3.org/2001/mstts" xmlns:emo="http://www.w3.org/2009/10/emotionml" version="1.0" xml:lang="en-US">
                     <voice name="en-US-{name}Neural">
@@ -53,7 +47,7 @@ class MyUDPHandler(socketserver.DatagramRequestHandler):
                         </mstts:express-as>
                         <s />
                     </voice>
-                </speak>""
+                </speak>"""
         else:
                 ssml = f"""<speak xmlns="http://www.w3.org/2001/10/synthesis" xmlns:mstts="http://www.w3.org/2001/mstts" xmlns:emo="http://www.w3.org/2009/10/emotionml" version="1.0" xml:lang="en-US">
                     <voice name="en-US-{name}Neural">
@@ -87,8 +81,14 @@ class MyUDPHandler(socketserver.DatagramRequestHandler):
             print(e)
 
 
+# this is the main entrypoint
 if __name__ == '__main__':
+    # we specify the address and port we want to listen on
     listen_addr = ('0.0.0.0', 5005)
+
+    # with allowing to reuse the address we dont get into problems running it consecutively sometimes
     socketserver.UDPServer.allow_reuse_address = True
+
+    # register our class
     serverUDP = socketserver.UDPServer(listen_addr, MyUDPHandler)
     serverUDP.serve_forever()
